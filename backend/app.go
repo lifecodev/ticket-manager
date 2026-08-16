@@ -25,7 +25,7 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	db, _ := gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
 	a.db = db 
-	err := a.db.AutoMigrate(&User{})
+	err := a.db.AutoMigrate(&User{}, &Ticket{})
 	if err != nil {
 		log.Fatalf("Не удалось применить миграцию базы данных: %v", err)
 	}
