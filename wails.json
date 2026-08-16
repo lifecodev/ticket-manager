@@ -1,0 +1,14 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "ticket-manager",
+  "outputfilename": "ticket-manager",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "backend:dir": "backend",
+  "author": {
+    "name": "Lifecodev",
+    "email": "lifecodev@yandex.ru"
+  }
+}
