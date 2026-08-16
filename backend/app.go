@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	//"fmt"
-
+	"log"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
