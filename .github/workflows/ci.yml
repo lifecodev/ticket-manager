@@ -21,7 +21,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v7
         with:
-          version: v2.4.0
+          version: v1.66.0
           working-directory: backend
           skip-cache: true
 
@@ -58,7 +58,6 @@ jobs:
           - os: ubuntu-latest
             platform: linux/amd64
             output_name: my-wails-app
-    
     runs-on: ${{ matrix.build.os }}
 
     steps:
@@ -68,12 +67,12 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.25.0'
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       # Системные зависимости для сборки под Linux (для Windows и Mac это не нужно)
       - name: Install Linux Dependencies
@@ -82,13 +81,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev build-essential
 
-      # Установка Wails CLI внутри виртуальной машины GitHub
+      # Установка Wails CLI внутри виртуальной машины GitHub (в каталоге backend)
       - name: Install Wails CLI
-        run: go install ://github.com
+        working-directory: ./backend
+        run: |
+          go install github.com/wailsapp/wails/v2/cmd/wails@latest
+          echo "$(go env GOPATH)/bin" > $GITHUB_PATH
 
       # Сама команда сборки Wails. Она автоматически соберет фронтенд и упакует в Go
       - name: Build Application
+        working-directory: ./backend
         run: wails build -platform ${{ matrix.build.platform }} -clean
+
+      # Покажем содержимое build/bin для отладки, чтобы upload-artifact падал с понятной ошибкой
+      - name: List build output
+        run: ls -la build/bin || true
+        working-directory: ./backend
 
       # Сохранение готового файла в артефакты сборки GitHub
       - name: Upload Artifact
