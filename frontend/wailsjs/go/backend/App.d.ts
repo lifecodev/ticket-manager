@@ -14,4 +14,4 @@ export function Logout():Promise<void>;
 
 export function Register(arg1:string,arg2:string):Promise<string>;
 
-export function UpdateTicketStatus(arg1:number,arg2:string):Promise<void>;
+export function UpdateTicketStatus(arg1:number,arg2:backend.TicketStatus):Promise<void>;

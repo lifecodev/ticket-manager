@@ -36,10 +36,10 @@ func (a *App) GetAllTickets() ([]Ticket, error) {
 	return tickets, nil
 }
 
-func (a *App) UpdateTicketStatus(ticketID uint, newStatus string) error {
+func (a *App) UpdateTicketStatus(ticketID uint, status TicketStatus) error {
 	if a.currentUser == nil {
 		return errors.New("вы не авторизованы")
 	}
 
-	return a.db.Model(&Ticket{}).Where("id = ?", ticketID).Update("status", newStatus).Error
+	return a.db.Model(&Ticket{}).Where("id = ?", ticketID).Update("status", status).Error
 }

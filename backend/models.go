@@ -2,6 +2,14 @@ package backend
 
 import "time"
 
+type TicketStatus string
+
+const (
+	StatusOpen			TicketStatus = "open"
+	StatusInProgress	TicketStatus = "in_progress"
+	StatusClosed		TicketStatus = "completed"
+)
+
 type User struct {
 	ID				uint		`json:"id" gorm:"primaryKey"` 
 	Name			string 		`json:"name"`
@@ -18,8 +26,8 @@ type Ticket struct {
 	Status			string		`json:"status" gorm:"default:'open'"`
 	UserID			uint		`json:"user_id"`
 	User			User		`json:"user,omitempty" gorm:"foreignKey:UserID"`
-	CreatedAt 		time.Time	`json:"created_at"`		
-	UpdatedAt		time.Time	`json:"updated_at"`
+	CreatedAt 		time.Time	`json:"created_at" gorm:"autoCreatetime"`		
+	UpdatedAt		time.Time	`json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 type Client struct {

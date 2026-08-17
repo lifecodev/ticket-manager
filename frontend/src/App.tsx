@@ -1,7 +1,19 @@
 import React from 'react';
 import './App.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from './context/AuthContext';
 import { LoginScreen } from './components/LoginScreen';
+import { TicketsScreen } from './components/TicketsScreen';
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            staleTime: 1000 * 60 * 5,
+            retry: 1,
+        }
+    }
+});
 
 function App() {
     const { user, loading, logout } = useAuth();
@@ -18,8 +30,7 @@ function App() {
       </header>
       
       <main style={{ marginTop: '20px' }}>
-        <p>Здесь находится защищенный контент приложения.</p>
-        {/* Любой дочерний компонент отсюда теперь может вызвать useAuth() */}
+        <TicketsScreen />
       </main>
     </div>
   );
