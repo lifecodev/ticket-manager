@@ -3,15 +3,16 @@ package backend
 import (
 	"context"
 	"log"
-	"gorm.io/driver/sqlite"
+
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
 // App struct
 type App struct {
-	ctx 			context.Context
-	db 				*gorm.DB
-	currentUser		*User
+	ctx         context.Context
+	db          *gorm.DB
+	currentUser *User
 }
 
 // NewApp creates a new App application struct
@@ -19,13 +20,24 @@ func NewApp() *App {
 	return &App{}
 }
 
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-	db, _ := gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
-	a.db = db 
-	err := a.db.AutoMigrate(&User{}, &Ticket{})
+
+	// 1. Подключаемся к базе данных
+	db, err := gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Не удалось подключиться к базе данных: %v", err)
+	}
+
+	// 2. Дополнительная проверка на nil для безопасности
+	if db == nil {
+		log.Fatalf("Объект БД равен nil, невозможно продолжить работу")
+	}
+
+	a.db = db
+
+	// 3. Выполняем автомиграцию
+	err = a.db.AutoMigrate(&User{}, &Ticket{})
 	if err != nil {
 		log.Fatalf("Не удалось применить миграцию базы данных: %v", err)
 	}
