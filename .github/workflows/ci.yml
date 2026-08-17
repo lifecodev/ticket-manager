@@ -53,10 +53,10 @@ jobs:
         build:
           - os: windows-latest
             platform: windows/amd64
-            output_name: my-wails-app.exe
+            output_name: ticket-manager.exe
           - os: ubuntu-latest
             platform: linux/amd64
-            output_name: my-wails-app
+            output_name: ticket-manager
     runs-on: ${{ matrix.build.os }}
 
     steps:
