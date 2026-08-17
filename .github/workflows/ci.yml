@@ -23,7 +23,6 @@ jobs:
         with:
           version: latest
           working-directory: backend
-          skip-cache: true
 
   lint-frontend:
     name: Lint Frontend
@@ -83,6 +82,7 @@ jobs:
 
       # Установка Wails CLI внутри виртуальной машины GitHub (в каталоге backend)
       - name: Install Wails CLI
+        shell: bash
         working-directory: ./backend
         run: |
           go install github.com/wailsapp/wails/v2/cmd/wails@latest
@@ -95,6 +95,7 @@ jobs:
 
       # Покажем содержимое build/bin для отладки, чтобы upload-artifact падал с понятной ошибкой
       - name: List build output
+        shell: bash
         run: ls -la build/bin || true
         working-directory: ./
 
