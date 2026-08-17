@@ -90,13 +90,13 @@ jobs:
 
       # Сама команда сборки Wails. Она автоматически соберет фронтенд и упакует в Go
       - name: Build Application
-        working-directory: ./backend
+        working-directory: ./
         run: wails build -platform ${{ matrix.build.platform }} -clean
 
       # Покажем содержимое build/bin для отладки, чтобы upload-artifact падал с понятной ошибкой
       - name: List build output
         run: ls -la build/bin || true
-        working-directory: ./backend
+        working-directory: ./
 
       # Сохранение готового файла в артефакты сборки GitHub
       - name: Upload Artifact
